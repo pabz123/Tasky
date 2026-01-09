@@ -24,17 +24,18 @@ import {
 } from './components/Icons';
 
 // --- Supabase Configuration ---
-const SUPABASE_URL = 'https://hhnigcgstxjymgxxnyak.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_PJVYmCr9Q6TBRLT3d7Y2hg_dgERETWE';
+// Using type casting to bypass TS error: Property 'env' does not exist on type 'ImportMeta'
+const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
 
 // Initialize Supabase with basic error handling
 let supabase: any = null;
-try {
-    if (SUPABASE_URL && !SUPABASE_URL.includes('your-project')) {
+if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+    try {
         supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch (e) {
+        console.error("Supabase initialization error:", e);
     }
-} catch (e) {
-    console.error("Supabase initialization error:", e);
 }
 
 const PulseIcon = () => (
@@ -88,19 +89,36 @@ function App() {
       setTimeout(() => setActiveToasts(prev => prev.filter(t => t.id !== notif.id)), 4000);
   }, []);
 
+  // Fetch tasks from Supabase when user is logged in
+  const syncTasks = useCallback(async (userId: string) => {
+    if (!supabase) return;
+    const { data, error } = await supabase
+        .from('tasks')
+        .select('*')
+        .eq('user_id', userId);
+    
+    if (error) {
+        console.error("Error syncing tasks:", error);
+    } else if (data) {
+        setTasks(data);
+    }
+  }, []);
+
   useEffect(() => {
     if (!supabase) return;
     
     supabase.auth.getSession().then(({ data: { session } }: any) => {
       setUser(session?.user ?? null);
+      if (session?.user) syncTasks(session.user.id);
     });
 
     const { data: authListener } = supabase.auth.onAuthStateChange((_event: string, session: any) => {
       setUser(session?.user ?? null);
+      if (session?.user) syncTasks(session.user.id);
     });
 
     return () => authListener.subscription.unsubscribe();
-  }, []);
+  }, [syncTasks]);
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -126,9 +144,9 @@ function App() {
   }, [sessions, tasks, profile, healthData]);
 
   const handleSendMessage = useCallback(async () => {
-    const apiKey = process.env.API_KEY;
-    if (!apiKey) {
-        addNotification("Configuration Error: Missing API Key", "overdue");
+    // API key must be obtained exclusively from process.env.API_KEY
+    if (!process.env.API_KEY) {
+        addNotification("Configuration Error: Missing API Key.", "overdue");
         return;
     }
     
@@ -153,38 +171,57 @@ function App() {
     });
 
     try {
-        const ai = new GoogleGenAI({ apiKey });
+        // Create a new GoogleGenAI instance right before making an API call
+        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
         const planTypes = ["Balanced Harmony", "Peak Focus Sprint", "Gentle Progress"];
         
         await Promise.all(planTypes.map(async (type, i) => {
             const res = await ai.models.generateContent({
                 model: 'gemini-3-pro-preview',
-                contents: [{ role: 'user', parts: [{ text: `User: ${profile.name}. Goal: "${prompt}". Mode: ${type}.` }] }],
+                contents: `User: ${profile.name}. Goal: "${prompt}". Mode: ${type}.`,
                 config: {
                     systemInstruction: `Return ONLY JSON with 'summary' and 'tasks' (array). Fields: text, priority, estimatedTime, dueDate.`,
                     responseMimeType: "application/json"
                 }
             });
-            const data = JSON.parse(res.text);
+            const data = JSON.parse(res.text || '{}');
             setSessions(prev => prev.map(s => s.id === sessionId ? {
                 ...s,
                 artifacts: s.artifacts.map((art, idx) => idx === i ? {
-                    ...art, styleName: type, tasks: data.tasks.map((t: any) => ({ ...t, id: generateId(), completed: false })),
-                    summary: data.summary, status: 'complete'
+                    ...art, 
+                    styleName: type, 
+                    tasks: (data.tasks || []).map((t: any) => ({ ...t, id: generateId(), completed: false })),
+                    summary: data.summary || '', 
+                    status: 'complete'
                 } : art)
             } : s));
         }));
         addNotification("Architectural plans ready.", "success");
     } catch (e) {
-        addNotification("AI Error: Please retry.", "overdue");
+        addNotification("AI Error: Please retry or check your API Key.", "overdue");
         console.error(e);
     } finally {
         setIsLoading(false);
     }
   }, [inputValue, isLoading, profile.name, addNotification]);
 
-  const toggleTask = (taskId: string) => {
-      setTasks(prev => prev.map(t => t.id === taskId ? { ...t, completed: !t.completed } : t));
+  const toggleTask = async (taskId: string) => {
+      const task = tasks.find(t => t.id === taskId);
+      if (!task) return;
+
+      const updatedStatus = !task.completed;
+      
+      // Update locally
+      setTasks(prev => prev.map(t => t.id === taskId ? { ...t, completed: updatedStatus } : t));
+
+      // Update in Supabase if logged in
+      if (supabase && user) {
+          const { error } = await supabase
+            .from('tasks')
+            .update({ completed: updatedStatus })
+            .eq('id', taskId);
+          if (error) console.error("Error updating task on cloud:", error);
+      }
   };
 
   return (
@@ -211,6 +248,11 @@ function App() {
 
             {viewMode === 'auth' ? (
                 <div className="auth-container">
+                    {!SUPABASE_URL && (
+                        <div className="toast overdue" style={{ position: 'static', marginBottom: '20px' }}>
+                            Supabase environment variables not found! App will run in offline mode.
+                        </div>
+                    )}
                     <section className="pulse-card">
                         <div className="card-header"><h4>{user ? 'Cloud Active' : 'Connect Cloud'}</h4></div>
                         <div className="card-body">
@@ -224,12 +266,12 @@ function App() {
                                     e.preventDefault(); 
                                     const email = (e.target as any).email.value;
                                     const password = (e.target as any).password.value;
-                                    if (!supabase) return addNotification("Supabase not configured", "overdue");
+                                    if (!supabase) return addNotification("Supabase not configured in Netlify Settings", "overdue");
                                     const { error } = await supabase.auth.signInWithPassword({ email, password });
                                     if (error) {
                                         const { error: se } = await supabase.auth.signUp({ email, password });
                                         if (se) addNotification(se.message, "overdue");
-                                        else addNotification("Account created!", "success");
+                                        else addNotification("Account created! Verify your email or sign in.", "success");
                                     }
                                 }}>
                                     <input name="email" type="email" placeholder="Email" required />
@@ -249,8 +291,25 @@ function App() {
                     {currentSessionIndex !== -1 && (
                         <div className="artifact-grid">
                             {sessions[currentSessionIndex].artifacts.map((art) => (
-                                <ArtifactCard key={art.id} artifact={art} onSync={(a) => {
-                                    setTasks(prev => [...a.tasks.map(t => ({...t, id: generateId()})), ...prev]);
+                                <ArtifactCard key={art.id} artifact={art} onSync={async (a) => {
+                                    const newTasks = a.tasks.map(t => ({...t, id: generateId()}));
+                                    setTasks(prev => [...newTasks, ...prev]);
+                                    
+                                    // If logged in, save to cloud
+                                    if (supabase && user) {
+                                        for (const nt of newTasks) {
+                                            await supabase.from('tasks').insert({
+                                                id: nt.id,
+                                                user_id: user.id,
+                                                text: nt.text,
+                                                priority: nt.priority,
+                                                estimated_time: nt.estimatedTime,
+                                                due_date: nt.dueDate,
+                                                completed: false
+                                            });
+                                        }
+                                        addNotification("Plan synchronized to cloud.", "success");
+                                    }
                                     setViewMode('dashboard');
                                 }} />
                             ))}
@@ -326,4 +385,8 @@ function App() {
 }
 
 const rootElement = document.getElementById('root');
-if (rootElement) ReactDOM.createRoot(rootElement).render(<App />);
+if (rootElement) {
+    ReactDOM.createRoot(rootElement).render(<App />);
+} else {
+    console.error("Critical Error: Root element not found.");
+}
