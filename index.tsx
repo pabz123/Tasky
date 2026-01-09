@@ -1,20 +1,12 @@
 
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
-*/
-
-import { GoogleGenAI, Type, Modality, LiveServerMessage } from '@google/genai';
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { GoogleGenAI } from '@google/genai';
+import React, { useState, useCallback, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createClient } from '@supabase/supabase-js';
 
 import { 
-    Artifact, 
     Session, 
     Task, 
-    Achievement, 
-    DailyLog, 
     AppNotification,
     UserProfile,
     HealthData
@@ -32,22 +24,19 @@ import {
 } from './components/Icons';
 
 // --- Supabase Configuration ---
-// TO USER: Replace these with your actual Supabase Project URL and Anon Key
 const SUPABASE_URL = 'https://hhnigcgstxjymgxxnyak.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_PJVYmCr9Q6TBRLT3d7Y2hg_dgERETWE';
-// Initialize Supabase safely
+
+// Initialize Supabase with basic error handling
 let supabase: any = null;
 try {
-    if (SUPABASE_URL.includes('Taskii')) {
-        console.warn("Supabase URL is not configured. Cloud sync will be disabled.");
-    } else {
+    if (SUPABASE_URL && !SUPABASE_URL.includes('your-project')) {
         supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     }
 } catch (e) {
-    console.error("Failed to initialize Supabase:", e);
+    console.error("Supabase initialization error:", e);
 }
 
-// --- Icons & UI Components ---
 const PulseIcon = () => (
     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
 );
@@ -55,7 +44,7 @@ const HealthIcon = () => (
   <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
 );
 const SettingsIcon = () => (
-  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1-1 1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
 );
 
 function App() {
@@ -99,42 +88,19 @@ function App() {
       setTimeout(() => setActiveToasts(prev => prev.filter(t => t.id !== notif.id)), 4000);
   }, []);
 
-  // --- Auth & Data Fetching ---
   useEffect(() => {
     if (!supabase) return;
     
     supabase.auth.getSession().then(({ data: { session } }: any) => {
       setUser(session?.user ?? null);
-      if (session?.user) fetchUserTasks(session.user.id);
     });
 
     const { data: authListener } = supabase.auth.onAuthStateChange((_event: string, session: any) => {
       setUser(session?.user ?? null);
-      if (session?.user) fetchUserTasks(session.user.id);
     });
 
     return () => authListener.subscription.unsubscribe();
   }, []);
-
-  const fetchUserTasks = async (userId: string) => {
-      const { data, error } = await supabase.from('tasks').select('*').eq('user_id', userId);
-      if (!error && data) {
-          setTasks(data);
-          addNotification("Cloud Sync: Tasks Restored", "success");
-      }
-  };
-
-  const saveTaskToCloud = async (task: Task) => {
-      if (!user || !supabase) return;
-      await supabase.from('tasks').upsert({
-          id: task.id,
-          user_id: user.id,
-          text: task.text,
-          completed: task.completed,
-          priority: task.priority,
-          due_date: task.dueDate
-      });
-  };
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -210,7 +176,7 @@ function App() {
         }));
         addNotification("Architectural plans ready.", "success");
     } catch (e) {
-        addNotification("AI Error: Check console or API Key", "overdue");
+        addNotification("AI Error: Please retry.", "overdue");
         console.error(e);
     } finally {
         setIsLoading(false);
@@ -218,13 +184,7 @@ function App() {
   }, [inputValue, isLoading, profile.name, addNotification]);
 
   const toggleTask = (taskId: string) => {
-      setTasks(prev => {
-          // Fixed typo: changed 'pt' to 't' to correctly reference the current task item
-          const updated = prev.map(t => t.id === taskId ? { ...t, completed: !t.completed } : t);
-          const task = updated.find(t => t.id === taskId);
-          if (task) saveTaskToCloud(task);
-          return updated;
-      });
+      setTasks(prev => prev.map(t => t.id === taskId ? { ...t, completed: !t.completed } : t));
   };
 
   return (
@@ -252,31 +212,29 @@ function App() {
             {viewMode === 'auth' ? (
                 <div className="auth-container">
                     <section className="pulse-card">
-                        <div className="card-header"><h4>{user ? 'Account Connected' : 'Connect Cloud Database'}</h4></div>
+                        <div className="card-header"><h4>{user ? 'Cloud Active' : 'Connect Cloud'}</h4></div>
                         <div className="card-body">
                             {user ? (
                                 <div style={{ textAlign: 'center' }}>
-                                    <div className="auth-pitch" style={{ marginBottom: '10px' }}>Your data is securely synchronized across your devices.</div>
-                                    <p style={{ fontSize: '0.85rem', opacity: 0.7 }}>Logged in as: <strong>{user.email}</strong></p>
-                                    <button className="save-log-btn danger" style={{ width: '100%', marginTop: '20px' }} onClick={() => supabase.auth.signOut()}>Logout & Stop Sync</button>
+                                    <p>Logged in as: <strong>{user.email}</strong></p>
+                                    <button className="save-log-btn danger" style={{ width: '100%', marginTop: '20px' }} onClick={() => supabase.auth.signOut()}>Logout</button>
                                 </div>
                             ) : (
                                 <form className="auth-form" onSubmit={async (e) => { 
                                     e.preventDefault(); 
                                     const email = (e.target as any).email.value;
                                     const password = (e.target as any).password.value;
+                                    if (!supabase) return addNotification("Supabase not configured", "overdue");
                                     const { error } = await supabase.auth.signInWithPassword({ email, password });
                                     if (error) {
-                                        const { error: signUpError } = await supabase.auth.signUp({ email, password });
-                                        if (signUpError) addNotification(signUpError.message, "overdue");
-                                        else addNotification("Welcome! Account created.", "success");
+                                        const { error: se } = await supabase.auth.signUp({ email, password });
+                                        if (se) addNotification(se.message, "overdue");
+                                        else addNotification("Account created!", "success");
                                     }
                                 }}>
-                                    <p className="auth-pitch">Enter your credentials to sync your architectural plans and health logs to the Supabase Cloud.</p>
-                                    <input name="email" type="email" placeholder="Email Address" required />
+                                    <input name="email" type="email" placeholder="Email" required />
                                     <input name="password" type="password" placeholder="Password" required />
-                                    <button type="submit" className="save-log-btn">Initialize Connection</button>
-                                    {!supabase && <p style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '10px', textAlign: 'center' }}>Error: Supabase Keys missing in code.</p>}
+                                    <button type="submit" className="save-log-btn">Sign In / Sign Up</button>
                                 </form>
                             )}
                         </div>
@@ -286,16 +244,13 @@ function App() {
                 <div className="stage-container">
                     <div className={`empty-state ${sessions.length > 0 || isLoading ? 'fade-out' : ''}`}>
                         <h1>Architect Your Day.</h1>
-                        <p>Tasky uses AI to turn your goals into efficient workflows.</p>
+                        <p>Turn goals into workflows with AI precision.</p>
                     </div>
                     {currentSessionIndex !== -1 && (
                         <div className="artifact-grid">
                             {sessions[currentSessionIndex].artifacts.map((art) => (
                                 <ArtifactCard key={art.id} artifact={art} onSync={(a) => {
-                                    const newTasks = a.tasks.map(t => ({...t, id: generateId()}));
-                                    setTasks(prev => [...newTasks, ...prev]);
-                                    newTasks.forEach(saveTaskToCloud);
-                                    addNotification("Syncing plan to cloud...", "success");
+                                    setTasks(prev => [...a.tasks.map(t => ({...t, id: generateId()})), ...prev]);
                                     setViewMode('dashboard');
                                 }} />
                             ))}
@@ -305,21 +260,17 @@ function App() {
             ) : viewMode === 'dashboard' ? (
                 <div className="pulse-dashboard-container">
                     <section className="pulse-card">
-                        <div className="card-header"><h4>Daily Focus Board</h4> <PulseIcon /></div>
+                        <div className="card-header"><h4>Focus Board</h4> <PulseIcon /></div>
                         <div className="card-body">
-                            {tasks.length === 0 && <p style={{ textAlign: 'center', padding: '40px', opacity: 0.5 }}>Your board is clear. Let's architect a plan!</p>}
+                            {tasks.length === 0 && <p style={{ textAlign: 'center', opacity: 0.5 }}>Board clear. Start architecting!</p>}
                             <ul className="task-list">
                                 {tasks.map(t => (
                                     <li key={t.id} className={`task-item ${t.completed ? 'done' : ''}`}>
-                                        <button className="checkbox" onClick={() => toggleTask(t.id)}>
-                                            {t.completed ? '✓' : ''}
-                                        </button>
+                                        <button className="checkbox" onClick={() => toggleTask(t.id)}>{t.completed ? '✓' : ''}</button>
                                         <div className="task-content">
                                             <span className="task-text">{t.text}</span>
-                                            <div className="task-meta" style={{ display: 'flex', gap: '10px', fontSize: '0.75rem', opacity: 0.6, marginTop: '4px' }}>
-                                                <span style={{ color: t.priority === 'high' ? '#ef4444' : 'inherit' }}>{t.priority} Priority</span>
-                                                <span>• {t.estimatedTime}</span>
-                                                <span>• {t.dueDate}</span>
+                                            <div className="task-meta" style={{ fontSize: '0.75rem', opacity: 0.6 }}>
+                                                <span>{t.priority} priority</span> • <span>{t.estimatedTime}</span>
                                             </div>
                                         </div>
                                     </li>
@@ -331,44 +282,29 @@ function App() {
             ) : viewMode === 'health' ? (
                 <div className="pulse-dashboard-container">
                     <div className="health-monitor-grid">
-                        <div className="health-card">
-                            <div className="health-info"><h3>{healthData.steps}</h3><p>Steps Today</p></div>
-                        </div>
-                        <div className="health-card">
-                            <div className="health-info"><h3>{healthData.heartRate} <small>BPM</small></h3><p>Current Pulse</p></div>
-                        </div>
-                        <div className="health-card">
-                            <div className="health-info"><h3>{healthData.waterIntake} <small>ml</small></h3><p>Hydration Status</p></div>
-                        </div>
-                        <div className="health-card">
-                            <div className="health-info"><h3>{healthData.sleepHours} <small>hrs</small></h3><p>Sleep Efficiency</p></div>
-                        </div>
+                        <div className="health-card"><div className="health-info"><h3>{healthData.steps}</h3><p>Steps</p></div></div>
+                        <div className="health-card"><div className="health-info"><h3>{healthData.heartRate} <small>BPM</small></h3><p>Heart Rate</p></div></div>
+                        <div className="health-card"><div className="health-info"><h3>{healthData.waterIntake} <small>ml</small></h3><p>Hydration</p></div></div>
+                        <div className="health-card"><div className="health-info"><h3>{healthData.sleepHours} <small>hrs</small></h3><p>Sleep</p></div></div>
                     </div>
                 </div>
             ) : (
                 <div className="pulse-dashboard-container">
                     <section className="pulse-card">
-                        <div className="card-header"><h4>Configuration</h4> <SettingsIcon /></div>
+                        <div className="card-header"><h4>Settings</h4> <SettingsIcon /></div>
                         <div className="card-body">
-                            <div className="settings-group" style={{ marginBottom: '24px' }}>
-                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>Profile Name</label>
-                                <input style={{ width: '100%', padding: '14px', borderRadius: '12px', border: '1px solid var(--border-soft)', background: 'var(--bg-primary)', color: 'inherit' }} type="text" value={profile.name} onChange={e => setProfile({...profile, name: e.target.value})} />
+                            <div className="settings-group" style={{ marginBottom: '20px' }}>
+                                <label>Architect Name</label>
+                                <input style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-soft)' }} type="text" value={profile.name} onChange={e => setProfile({...profile, name: e.target.value})} />
                             </div>
                             <div className="settings-group">
-                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>Visual Theme</label>
+                                <label>Theme</label>
                                 <div className="theme-selector">
                                     {['light', 'dark', 'glass'].map(t => (
                                         <button key={t} className={profile.theme === t ? 'active' : ''} onClick={() => setProfile({...profile, theme: t as any})}>{t.toUpperCase()}</button>
                                     ))}
                                 </div>
                             </div>
-                            
-                            {installPrompt && (
-                                <div className="install-banner" style={{ marginTop: '40px' }}>
-                                    <p>Experience Tasky as a native mobile application.</p>
-                                    <button className="save-log-btn" style={{ width: '100%' }} onClick={triggerInstall}>Install to Home Screen</button>
-                                </div>
-                            )}
                         </div>
                     </section>
                 </div>
@@ -376,34 +312,18 @@ function App() {
 
             <div className="floating-input-container">
                 <div className={`input-wrapper ${isLoading ? 'loading' : ''}`}>
-                    {!inputValue && !isLoading && (
-                        <div className="animated-placeholder" style={{ position: 'absolute', left: '24px', opacity: 0.5, pointerEvents: 'none' }}>
-                            {INITIAL_PLACEHOLDERS[placeholderIndex]}
-                        </div>
-                    )}
-                    <input 
-                        value={inputValue} onChange={e => setInputValue(e.target.value)} 
-                        onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
-                        disabled={isLoading} 
-                    />
-                    <button className="send-button" onClick={handleSendMessage} disabled={isLoading || !inputValue.trim()}>
-                        {isLoading ? <ThinkingIcon /> : <ArrowUpIcon />}
-                    </button>
+                    {!inputValue && !isLoading && <div className="animated-placeholder" style={{ position: 'absolute', left: '24px', opacity: 0.5 }}>{INITIAL_PLACEHOLDERS[placeholderIndex]}</div>}
+                    <input value={inputValue} onChange={e => setInputValue(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSendMessage()} disabled={isLoading} />
+                    <button className="send-button" onClick={handleSendMessage} disabled={isLoading || !inputValue.trim()}>{isLoading ? <ThinkingIcon /> : <ArrowUpIcon />}</button>
                 </div>
             </div>
         </main>
-
         <div className="notification-toast-container">
-            {activeToasts.map(n => (
-                <div key={n.id} className={`toast ${n.type}`}><div className="toast-message">{n.message}</div></div>
-            ))}
+            {activeToasts.map(n => <div key={n.id} className="toast">{n.message}</div>)}
         </div>
     </div>
   );
 }
 
 const rootElement = document.getElementById('root');
-if (rootElement) {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(<App />);
-}
+if (rootElement) ReactDOM.createRoot(rootElement).render(<App />);
