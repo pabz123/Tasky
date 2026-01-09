@@ -83,28 +83,28 @@ function createBlob(data: Float32Array): { data: string; mimeType: string } {
 
 // --- Icons & UI Components ---
 const PulseIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
 );
 const TrophyIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
 );
 const LogIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
 );
 const BellIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
 );
 const MicIcon = ({ active }: { active?: boolean }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
 );
 const CalendarIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
 );
 const SettingsIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
 );
 const HealthIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
 );
 
 function App() {
@@ -354,34 +354,55 @@ function App() {
 
   return (
     <div className={`theme-${profile.theme}`} id="theme-wrapper">
-        <header className="top-nav">
-            <div className="nav-logo">
+        <header className="top-nav" role="banner">
+            <div className="nav-logo" aria-label="Tasky Logo">
                 <PulseIcon /> <span>Tasky<b>.</b></span>
             </div>
             
-            <div className="nav-tabs">
-                <button className={`nav-tab ${viewMode === 'generator' ? 'active' : ''}`} onClick={() => setViewMode('generator')}>
+            <nav className="nav-tabs" aria-label="Main Navigation">
+                <button 
+                    className={`nav-tab ${viewMode === 'generator' ? 'active' : ''}`} 
+                    onClick={() => setViewMode('generator')}
+                    aria-current={viewMode === 'generator' ? 'page' : undefined}
+                >
                     <SparklesIcon /> <span>Plan</span>
                 </button>
-                <button className={`nav-tab ${viewMode === 'dashboard' ? 'active' : ''}`} onClick={() => setViewMode('dashboard')}>
+                <button 
+                    className={`nav-tab ${viewMode === 'dashboard' ? 'active' : ''}`} 
+                    onClick={() => setViewMode('dashboard')}
+                    aria-current={viewMode === 'dashboard' ? 'page' : undefined}
+                >
                     <GridIcon /> <span>Focus</span>
                 </button>
-                <button className={`nav-tab ${viewMode === 'health' ? 'active' : ''}`} onClick={() => setViewMode('health')}>
+                <button 
+                    className={`nav-tab ${viewMode === 'health' ? 'active' : ''}`} 
+                    onClick={() => setViewMode('health')}
+                    aria-current={viewMode === 'health' ? 'page' : undefined}
+                >
                     <HealthIcon /> <span>Health</span>
                 </button>
-                <button className={`nav-tab ${viewMode === 'settings' ? 'active' : ''}`} onClick={() => setViewMode('settings')}>
+                <button 
+                    className={`nav-tab ${viewMode === 'settings' ? 'active' : ''}`} 
+                    onClick={() => setViewMode('settings')}
+                    aria-current={viewMode === 'settings' ? 'page' : undefined}
+                >
                     <SettingsIcon /> <span>Set</span>
                 </button>
-            </div>
+            </nav>
 
             <div className="nav-actions">
-                <div className={`live-status-pill ${isLiveActive ? 'active' : ''}`} onClick={toggleLiveSession}>
+                <button 
+                    className={`live-status-pill ${isLiveActive ? 'active' : ''}`} 
+                    onClick={toggleLiveSession}
+                    aria-label={isLiveActive ? "Stop voice architect" : "Start voice architect"}
+                    aria-pressed={isLiveActive}
+                >
                     <MicIcon active={isLiveActive} />
-                </div>
+                </button>
             </div>
         </header>
 
-        <main className="immersive-app">
+        <main className="immersive-app" role="main">
             <DottedGlowBackground gap={32} radius={2} color="rgba(14, 165, 233, 0.05)" glowColor="rgba(212, 175, 55, 0.3)" speedScale={0.3} />
 
             {viewMode === 'generator' ? (
@@ -402,33 +423,48 @@ function App() {
             ) : viewMode === 'dashboard' ? (
                 <div className="pulse-dashboard-container">
                     <div className="pulse-grid">
-                        <section className="pulse-card">
-                            <div className="card-header"><h4>Daily Focus</h4> <PulseIcon /></div>
+                        <section className="pulse-card" aria-labelledby="focus-header">
+                            <div className="card-header"><h4 id="focus-header">Daily Focus</h4> <PulseIcon /></div>
                             <div className="card-body">
                                 {tasks.length === 0 && <p className="empty-tasks">Monitor empty. Sync a plan!</p>}
-                                {tasks.map(t => (
-                                    <div key={t.id} className={`task-item ${t.completed ? 'done' : ''}`}>
-                                        <button className="checkbox" onClick={() => {
-                                            const next = !t.completed;
-                                            setTasks(prev => prev.map(pt => pt.id === t.id ? { ...pt, completed: next } : pt));
-                                            if (next) addNotification(`Completed: ${t.text}`, 'success');
-                                        }}>{t.completed ? '✓' : ''}</button>
-                                        <div className="task-content">
-                                            <span className="task-text">{t.text}</span>
-                                            <div className="task-meta">
-                                              {t.dueDate && <span className="task-deadline"><CalendarIcon /> {t.dueDate}</span>}
-                                              {t.estimatedTime && <span className="task-estimate">• {t.estimatedTime}</span>}
+                                <ul className="task-list" style={{ listStyle: 'none', padding: 0 }}>
+                                    {tasks.map(t => (
+                                        <li key={t.id} className={`task-item ${t.completed ? 'done' : ''}`}>
+                                            <button 
+                                                className="checkbox" 
+                                                role="checkbox"
+                                                aria-checked={t.completed}
+                                                aria-label={`Mark task "${t.text}" as ${t.completed ? 'incomplete' : 'complete'}`}
+                                                onClick={() => {
+                                                    const next = !t.completed;
+                                                    setTasks(prev => prev.map(pt => pt.id === t.id ? { ...pt, completed: next } : pt));
+                                                    if (next) addNotification(`Completed: ${t.text}`, 'success');
+                                                }}
+                                            >
+                                                {t.completed ? '✓' : ''}
+                                            </button>
+                                            <div className="task-content">
+                                                <span className="task-text">{t.text}</span>
+                                                <div className="task-meta">
+                                                {t.dueDate && <span className="task-deadline"><CalendarIcon /> {t.dueDate}</span>}
+                                                {t.estimatedTime && <span className="task-estimate">• {t.estimatedTime}</span>}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                ))}
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
                         </section>
-                        <section className="pulse-card">
-                            <div className="card-header"><h4>Archive</h4> <LogIcon /></div>
+                        <section className="pulse-card" aria-labelledby="archive-header">
+                            <div className="card-header"><h4 id="archive-header">Archive</h4> <LogIcon /></div>
                             <div className="card-body">
                                 <div className="log-input-area">
-                                    <textarea placeholder="Journal a win..." value={newLogContent} onChange={e => setNewLogContent(e.target.value)} />
+                                    <textarea 
+                                        aria-label="Journal entry content"
+                                        placeholder="Journal a win..." 
+                                        value={newLogContent} 
+                                        onChange={e => setNewLogContent(e.target.value)} 
+                                    />
                                     <button className="save-log-btn" onClick={() => {
                                         if (!newLogContent.trim()) return;
                                         setDailyLogs(prev => [{ id: generateId(), content: newLogContent, timestamp: Date.now() }, ...prev]);
@@ -451,124 +487,157 @@ function App() {
             ) : viewMode === 'health' ? (
                 <div className="pulse-dashboard-container">
                     <div className="health-monitor-grid">
-                        <div className="health-card steps">
+                        <article className="health-card steps" aria-labelledby="health-steps">
                             <div className="health-icon-wrap"><PulseIcon /></div>
                             <div className="health-info">
-                                <h3>{healthData.steps}</h3>
+                                <h3 id="health-steps">{healthData.steps}</h3>
                                 <p>Steps Today</p>
-                                <div className="health-progress-bg">
+                                <div className="health-progress-bg" role="progressbar" aria-valuenow={healthData.steps} aria-valuemin={0} aria-valuemax={profile.stepGoal}>
                                     <div className="health-progress-bar" style={{ width: `${Math.min(100, (healthData.steps / profile.stepGoal) * 100)}%` }}></div>
                                 </div>
                                 <small>Goal: {profile.stepGoal}</small>
                             </div>
-                        </div>
-                        <div className="health-card heart">
+                        </article>
+                        <article className="health-card heart" aria-labelledby="health-heart">
                             <div className="health-icon-wrap active"><PulseIcon /></div>
                             <div className="health-info">
-                                <h3>{healthData.heartRate} <span>BPM</span></h3>
+                                <h3 id="health-heart">{healthData.heartRate} <span>BPM</span></h3>
                                 <p>Live Pulse</p>
-                                <div className="pulse-visualizer">
+                                <div className="pulse-visualizer" aria-hidden="true">
                                     <span></span><span></span><span></span><span></span><span></span>
                                 </div>
                             </div>
-                        </div>
-                        <div className="health-card water">
+                        </article>
+                        <article className="health-card water" aria-labelledby="health-water">
                             <div className="health-icon-wrap"><HealthIcon /></div>
                             <div className="health-info">
-                                <h3>{healthData.waterIntake} <span>ml</span></h3>
+                                <h3 id="health-water">{healthData.waterIntake} <span>ml</span></h3>
                                 <p>Hydration</p>
-                                <div className="water-levels">
+                                <div className="water-levels" role="group" aria-label="Water tracking drop buttons">
                                     {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
-                                        <div key={i} className={`water-drop ${healthData.waterIntake >= i * 300 ? 'filled' : ''}`} onClick={() => updateHealth({ waterIntake: i * 300 })}></div>
+                                        <button 
+                                            key={i} 
+                                            className={`water-drop ${healthData.waterIntake >= i * 300 ? 'filled' : ''}`} 
+                                            aria-label={`Mark ${i * 300} ml intake`}
+                                            aria-pressed={healthData.waterIntake >= i * 300}
+                                            onClick={() => updateHealth({ waterIntake: i * 300 })}
+                                        ></button>
                                     ))}
                                 </div>
                             </div>
-                        </div>
-                        <div className="health-card sleep">
+                        </article>
+                        <article className="health-card sleep" aria-labelledby="health-sleep">
                             <div className="health-icon-wrap"><TrophyIcon /></div>
                             <div className="health-info">
-                                <h3>{healthData.sleepHours} <span>hrs</span></h3>
+                                <h3 id="health-sleep">{healthData.sleepHours} <span>hrs</span></h3>
                                 <p>Last Night's Sleep</p>
                                 <small>Goal: {profile.sleepGoal} hrs</small>
                             </div>
-                        </div>
+                        </article>
                     </div>
                 </div>
             ) : (
                 <div className="pulse-dashboard-container">
-                    <div className="pulse-card settings-card">
-                        <div className="card-header"><h4>User Profile</h4> <SettingsIcon /></div>
+                    <section className="pulse-card settings-card" aria-labelledby="settings-header">
+                        <div className="card-header"><h4 id="settings-header">User Profile</h4> <SettingsIcon /></div>
                         <div className="card-body">
                             <div className="settings-group">
-                                <label>Your Name</label>
-                                <input type="text" value={profile.name} onChange={e => setProfile({...profile, name: e.target.value})} />
+                                <label htmlFor="user-name">Your Name</label>
+                                <input id="user-name" type="text" value={profile.name} onChange={e => setProfile({...profile, name: e.target.value})} />
                             </div>
                             <div className="settings-group">
-                                <label>Interface Theme</label>
-                                <div className="theme-selector">
-                                    <button className={profile.theme === 'light' ? 'active' : ''} onClick={() => setProfile({...profile, theme: 'light'})}>Light</button>
-                                    <button className={profile.theme === 'dark' ? 'active' : ''} onClick={() => setProfile({...profile, theme: 'dark'})}>Dark</button>
-                                    <button className={profile.theme === 'glass' ? 'active' : ''} onClick={() => setProfile({...profile, theme: 'glass'})}>Glass</button>
+                                <label id="theme-label">Interface Theme</label>
+                                <div className="theme-selector" role="radiogroup" aria-labelledby="theme-label">
+                                    <button 
+                                        role="radio" 
+                                        aria-checked={profile.theme === 'light'} 
+                                        className={profile.theme === 'light' ? 'active' : ''} 
+                                        onClick={() => setProfile({...profile, theme: 'light'})}
+                                    >Light</button>
+                                    <button 
+                                        role="radio" 
+                                        aria-checked={profile.theme === 'dark'} 
+                                        className={profile.theme === 'dark' ? 'active' : ''} 
+                                        onClick={() => setProfile({...profile, theme: 'dark'})}
+                                    >Dark</button>
+                                    <button 
+                                        role="radio" 
+                                        aria-checked={profile.theme === 'glass'} 
+                                        className={profile.theme === 'glass' ? 'active' : ''} 
+                                        onClick={() => setProfile({...profile, theme: 'glass'})}
+                                    >Glass</button>
                                 </div>
                             </div>
                             <div className="settings-group">
-                                <label>Daily Step Goal</label>
-                                <input type="number" value={profile.stepGoal} onChange={e => setProfile({...profile, stepGoal: parseInt(e.target.value)})} />
+                                <label htmlFor="step-goal">Daily Step Goal</label>
+                                <input id="step-goal" type="number" value={profile.stepGoal} onChange={e => setProfile({...profile, stepGoal: parseInt(e.target.value)})} />
                             </div>
                             <div className="settings-group">
-                                <label>Sleep Goal (Hours)</label>
-                                <input type="number" value={profile.sleepGoal} onChange={e => setProfile({...profile, sleepGoal: parseFloat(e.target.value)})} />
+                                <label htmlFor="sleep-goal">Sleep Goal (Hours)</label>
+                                <input id="sleep-goal" type="number" value={profile.sleepGoal} onChange={e => setProfile({...profile, sleepGoal: parseFloat(e.target.value)})} />
                             </div>
                             <div className="settings-group">
-                                <label>Daily Hydration Goal (ml)</label>
-                                <input type="number" value={profile.waterGoal} onChange={e => setProfile({...profile, waterGoal: parseInt(e.target.value)})} />
+                                <label htmlFor="water-goal">Daily Hydration Goal (ml)</label>
+                                <input id="water-goal" type="number" value={profile.waterGoal} onChange={e => setProfile({...profile, waterGoal: parseInt(e.target.value)})} />
                             </div>
                         </div>
-                    </div>
-                    <div className="pulse-card history-card" style={{ marginTop: '24px' }}>
-                        <div className="card-header"><h4>Plan History</h4> <LogIcon /></div>
+                    </section>
+                    <section className="pulse-card history-card" style={{ marginTop: '24px' }} aria-labelledby="history-header">
+                        <div className="card-header"><h4 id="history-header">Plan History</h4> <LogIcon /></div>
                         <div className="card-body">
                             {sessions.length === 0 && <p>No previous plans archived.</p>}
                             <div className="history-list">
                                 {sessions.slice().reverse().map((s, idx) => (
-                                    <div key={s.id} className="history-item" onClick={() => {
-                                        setCurrentSessionIndex(sessions.length - 1 - idx);
-                                        setViewMode('generator');
-                                    }}>
+                                    <button 
+                                        key={s.id} 
+                                        className="history-item" 
+                                        aria-label={`Load plan: ${s.prompt}`}
+                                        onClick={() => {
+                                            setCurrentSessionIndex(sessions.length - 1 - idx);
+                                            setViewMode('generator');
+                                        }}
+                                    >
                                         <strong>{s.prompt}</strong>
                                         <small>{new Date(s.timestamp).toLocaleDateString()} at {new Date(s.timestamp).toLocaleTimeString()}</small>
-                                    </div>
+                                    </button>
                                 ))}
                             </div>
                         </div>
-                    </div>
+                    </section>
                 </div>
             )}
 
             <div className="floating-input-container">
-                <div className={`input-wrapper ${isLoading ? 'loading' : ''}`}>
+                <div className={`input-wrapper ${isLoading ? 'loading' : ''}`} aria-busy={isLoading}>
                     {!inputValue && !isLoading && (
-                        <div className="animated-placeholder">
+                        <div className="animated-placeholder" aria-hidden="true">
                             <span>{INITIAL_PLACEHOLDERS[placeholderIndex]}</span>
                         </div>
                     )}
                     <input 
-                        ref={inputRef} type="text" placeholder={isLoading ? "Architecting..." : ""}
+                        ref={inputRef} type="text" 
+                        aria-label="Planner architect input"
+                        placeholder={isLoading ? "Architecting..." : ""}
                         value={inputValue} onChange={e => setInputValue(e.target.value)} 
                         onKeyDown={e => e.key === 'Enter' && !isLoading && inputValue.trim() && handleSendMessage()}
                         disabled={isLoading} 
                     />
-                    <button className="send-button" onClick={() => handleSendMessage()} disabled={isLoading || !inputValue.trim()} title="Architect Plan (Enter)">
+                    <button 
+                        className="send-button" 
+                        onClick={() => handleSendMessage()} 
+                        disabled={isLoading || !inputValue.trim()} 
+                        aria-label="Architect Plan (Enter)"
+                    >
                         {isLoading ? <ThinkingIcon /> : <ArrowUpIcon />}
                     </button>
                 </div>
             </div>
         </main>
 
-        <div className="notification-toast-container">
+        <div className="notification-toast-container" aria-live="polite">
             {activeToasts.map(n => (
-                <div key={n.id} className={`toast ${n.type}`}>
-                    <div className="toast-icon">★</div>
+                <div key={n.id} className={`toast ${n.type}`} role="alert">
+                    <div className="toast-icon" aria-hidden="true">★</div>
                     <div className="toast-message">{n.message}</div>
                 </div>
             ))}
